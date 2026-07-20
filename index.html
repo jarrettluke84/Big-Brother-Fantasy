@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Big Brother Draft Tracker</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 
@@ -14,16 +14,24 @@
     </header>
 
     <div class="dashboard-container">
-        <!-- Interactive Memory Wall Grid -->
-        <main class="memory-wall" id="memoryWall"></main>
+        <!-- Interactive Memory Wall Grid Area -->
+        <main class="memory-wall" id="memoryWall">
+            <!-- Fallback content if script loading lags -->
+            <div style="grid-column: 1/-1; text-align: center; color: #94a3b8; padding: 40px;">
+                Loading Memory Wall...
+            </div>
+        </main>
 
         <!-- Right Side Stats Panel -->
         <aside class="stats-panel">
             <h2>Stats</h2>
-            <div id="standings"></div>
+            <div id="standings">
+                <div style="color: #94a3b8;">Loading Standings...</div>
+            </div>
         </aside>
     </div>
 
-    <script src="app.js"></script>
+    <!-- Explicitly call the relative script from the repository path -->
+    <script src="./app.js"></script>
 </body>
 </html>
