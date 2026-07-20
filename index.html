@@ -4,34 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Big Brother Draft Tracker</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
-        <h1>Big Brother <span>Draft Tracker</span></h1>
+        <h1>Big Brother Draft Tracker</h1>
         <div class="subtitle">The Memory Wall</div>
     </header>
 
-    <div class="dashboard-container">
-        <!-- Interactive Memory Wall Grid Area -->
-        <main class="memory-wall" id="memoryWall">
-            <!-- Fallback content if script loading lags -->
-            <div style="grid-column: 1/-1; text-align: center; color: #94a3b8; padding: 40px;">
-                Loading Memory Wall...
-            </div>
-        </main>
+    <!-- Interactive Grid Area -->
+    <main class="memory-wall" id="memoryWall">
+        <!-- Cards injected dynamically via app.js -->
+    </main>
 
-        <!-- Right Side Stats Panel -->
-        <aside class="stats-panel">
-            <h2>Stats</h2>
-            <div id="standings">
-                <div style="color: #94a3b8;">Loading Standings...</div>
-            </div>
-        </aside>
-    </div>
+    <!-- Draft Standings Scoreboard -->
+    <section class="stats-panel">
+        <h2>Draft Standings</h2>
+        <div id="standings">
+            <!-- Standings calculated dynamically via app.js -->
+        </div>
+    </section>
 
-    <!-- Explicitly call the relative script from the repository path -->
-    <script src="./app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
