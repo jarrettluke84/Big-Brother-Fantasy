@@ -1,5 +1,5 @@
 // 1. DATA CONFIGURATION (Directly mapped from your physical draft paper)
-const initialHouseguests = [
+var initialHouseguests = [
     { id: 1, name: "Barrett", drafter: "Jordyn", image: "barrett.jpg", evicted: false },
     { id: 2, name: "Taylor", drafter: "Emily", image: "taylor.jpg", evicted: false },
     { id: 3, name: "Mallory", drafter: "Gabby", image: "mallory.jpg", evicted: false },
@@ -16,41 +16,39 @@ const initialHouseguests = [
     { id: 14, name: "Kamu", drafter: "Gabby", image: "kamu.jpg", evicted: false },
     { id: 15, name: "Haley", drafter: "Emily", image: "haley.jpg", evicted: false },
     { id: 16, name: "Drew", drafter: "Jordyn", image: "drew.jpg", evicted: false },
-    { id: 17, name: "Angela", drafter: "None (Unchosen)", image: "angela.jpg", evicted: false }
+    { id: 17, name: "Angela", drafter: "Unchosen", image: "angela.jpg", evicted: false }
 ];
 
-// Persistent state management using LocalStorage with a fallback safety check
-let houseguests;
+var houseguests = initialHouseguests;
+
+// Safety storage check
 try {
-    const savedData = localStorage.getItem('bbDraftData');
-    // If saved data exists and isn't broken, parse it. Otherwise, use initial layout.
-    houseguests = savedData ? JSON.parse(savedData) : initialHouseguests;
-    if (!Array.isArray(houseguests) || houseguests.length === 0) {
-        houseguests = initialHouseguests;
+    var savedData = localStorage.getItem('bbDraftData');
+    if (savedData) {
+        var parsed = JSON.parse(savedData);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+            houseguests = parsed;
+        }
     }
 } catch (e) {
-    houseguests = initialHouseguests;
+    console.log("Storage fallthrough");
 }
-
-const memoryWall = document.getElementById('memoryWall');
-const standingsContainer = document.getElementById('standings');
 
 // 2. RENDER MEMORY WALL INTERACTIVE GRID
 function renderWall() {
+    var memoryWall = document.getElementById('memoryWall');
     if (!memoryWall) return;
     memoryWall.innerHTML = '';
     
-    houseguests.forEach(hg => {
-        const card = document.createElement('div');
-        card.className = `houseguest-card ${hg.evicted ? 'evicted' : ''}`;
+    houseguests.forEach(function(hg) {
+        var card = document.createElement('div');
+        card.className = 'houseguest-card ' + (hg.evicted ? 'evicted' : '');
         
-        const subtitleLabel = hg.drafter === "None (Unchosen)" ? "Unchosen" : `(${hg.drafter}'s Pick)`;
-        const buttonText = hg.evicted ? "In House" : "Out of House";
+        var subtitleLabel = hg.drafter === "Unchosen" ? "Unchosen" : "(" + hg.drafter + "'s Pick)";
+        var buttonText = hg.evicted ? "In House" : "Out of House";
 
-        // Using relative dot slash './' ensures GitHub Pages looks inside the correct repository directory
         card.innerHTML = `
             <div class="portrait-container">
-                // NEW UPDATED CODE
                 <img class="portrait-img" src="./images/${hg.image}" alt="${hg.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                 <div class="portrait-fallback" style="display:none;">
                     IMAGE PLACEHOLDER<br><strong>[${hg.image.toUpperCase()}]</strong>
@@ -63,12 +61,12 @@ function renderWall() {
         memoryWall.appendChild(card);
     });
 
-    // Handle button event binding
-    document.querySelectorAll('.status-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const hgId = parseInt(e.target.getAttribute('data-id'));
+    var buttons = document.querySelectorAll('.status-btn');
+    buttons.forEach(function(btn) {
+        btn.onclick = function(e) {
+            var hgId = parseInt(e.target.getAttribute('data-id'));
             toggleEviction(hgId);
-        });
+        };
     });
 
     saveData();
@@ -77,9 +75,9 @@ function renderWall() {
 
 // 3. EVENT HANDLER FOR HOUSEGUEST STATE ALTERATIONS
 function toggleEviction(id) {
-    houseguests = houseguests.map(hg => {
+    houseguests = houseguests.map(function(hg) {
         if (hg.id === id) {
-            return { ...hg, evicted: !hg.evicted };
+            hg.evicted = !hg.evicted;
         }
         return hg;
     });
@@ -88,11 +86,12 @@ function toggleEviction(id) {
 
 // 4. SCOREBOARD & PROGRESS CALCULATION
 function calculateStandings() {
+    var standingsContainer = document.getElementById('standings');
     if (!standingsContainer) return;
-    const scores = {};
+    var scores = {};
 
-    houseguests.forEach(hg => {
-        if (hg.drafter === "None (Unchosen)") return;
+    houseguests.forEach(function(hg) {
+        if (hg.drafter === "Unchosen") return;
 
         if (!scores[hg.drafter]) {
             scores[hg.drafter] = { active: 0, total: 0 };
@@ -103,34 +102,35 @@ function calculateStandings() {
         }
     });
 
-    let standingsHtml = '<div class="standings-list">';
-    for (const [drafter, stats] of Object.entries(scores)) {
-        const percentAlive = (stats.active / stats.total) * 100;
-        const dangerClass = stats.active < stats.total ? 'danger' : '';
+    var standingsHtml = '<div class="standings-list">';
+    for (var drafter in scores) {
+        if (scores.hasOwnProperty(drafter)) {
+            var stats = scores[drafter];
+            var percentAlive = (stats.active / stats.total) * 100;
+            var dangerClass = stats.active < stats.total ? 'danger' : '';
 
-        standingsHtml += `
-            <div class="drafter-row ${dangerClass}">
-                <div class="drafter-meta">
-                    <span class="drafter-name">${drafter}</span>
-                    <span class="drafter-ratio">${stats.active}/${stats.total} ALIVE</span>
+            standingsHtml += `
+                <div class="drafter-row ${dangerClass}">
+                    <div class="drafter-meta">
+                        <span class="drafter-name">${drafter}</span>
+                        <span class="drafter-ratio">${stats.active}/${stats.total} ALIVE</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width: ${percentAlive}%"></div>
+                    </div>
                 </div>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" style="width: ${percentAlive}%"></div>
-                </div>
-            </div>
-        `;
+            `;
+        }
     }
     standingsHtml += '</div>';
     standingsContainer.innerHTML = standingsHtml;
 }
 
-// 5. CACHE STATE CHANGES
+// 5. CACHE STATE CHANGES WITH FALLBACK
 function saveData() {
     try {
         localStorage.setItem('bbDraftData', JSON.stringify(houseguests));
-    } catch (e) {
-        console.error("Local storage saving blocked or full", e);
-    }
+    } catch (e) {}
 }
 
 // Launch application
