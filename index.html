@@ -9,22 +9,20 @@
 <body>
 
     <header>
-        <h1>Big Brother Draft Tracker</h1>
+        <h1>Big Brother <span>Draft Tracker</span></h1>
         <div class="subtitle">The Memory Wall</div>
     </header>
 
-    <!-- Interactive Grid Area -->
-    <main class="memory-wall" id="memoryWall">
-        <!-- Cards injected dynamically via app.js -->
-    </main>
+    <div class="dashboard-container">
+        <!-- Interactive Memory Wall Grid -->
+        <main class="memory-wall" id="memoryWall"></main>
 
-    <!-- Draft Standings Scoreboard -->
-    <section class="stats-panel">
-        <h2>Draft Standings</h2>
-        <div id="standings">
-            <!-- Standings calculated dynamically via app.js -->
-        </div>
-    </section>
+        <!-- Right Side Stats Panel -->
+        <aside class="stats-panel">
+            <h2>Stats</h2>
+            <div id="standings"></div>
+        </aside>
+    </div>
 
     <script src="app.js"></script>
 </body>
