@@ -73,14 +73,12 @@ function toggleEviction(id) {
     renderWall();
 }
 
-// 4. SCOREBOARD COMPUTATION
+// 4. SCOREBOARD & PROGRESS CALCULATION
 function calculateStandings() {
     const scores = {};
 
     houseguests.forEach(hg => {
-        // Skip tracking standings for unchosen players
-        if (hg.drafter === "Unchosen") return;
-
+        // We no longer skip "Unchosen"! It will create its own entry in the standings.
         if (!scores[hg.drafter]) {
             scores[hg.drafter] = { active: 0, total: 0 };
         }
@@ -92,9 +90,12 @@ function calculateStandings() {
 
     let standingsHtml = '<ul class="standings-list">';
     for (const [drafter, stats] of Object.entries(scores)) {
+        // Make the "Unchosen" text stand out a bit visually in the list
+        const displayName = drafter === "Unchosen" ? "<em>Unchosen (Angela)</em>" : drafter;
+        
         standingsHtml += `
             <li class="standings-item">
-                <span><strong>${drafter}</strong></span>
+                <span><strong>${displayName}</strong></span>
                 <span>${stats.active} / ${stats.total} Players Alive</span>
             </li>
         `;
