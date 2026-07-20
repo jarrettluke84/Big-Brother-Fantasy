@@ -1,3 +1,18 @@
+// 1. FIREBASE SETTING CONNECTION
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Access the global namespace directly
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
 // 1. DATA CONFIGURATION (Pre-populated with your 17 houseguests and images folder path)
 const initialHouseguests = [
     { id: 1, name: "Barrett", drafter: "Jordyn", image: "./images/barrett.jpeg", evicted: false },
