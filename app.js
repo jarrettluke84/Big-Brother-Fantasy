@@ -19,27 +19,38 @@ const initialHouseguests = [
     { id: 17, name: "Angela", drafter: "None (Unchosen)", image: "angela.jpg", evicted: false }
 ];
 
-// Persistent state management using LocalStorage
-let houseguests = JSON.parse(localStorage.getItem('bbDraftData')) || initialHouseguests;
+// Persistent state management using LocalStorage with a fallback safety check
+let houseguests;
+try {
+    const savedData = localStorage.getItem('bbDraftData');
+    // If saved data exists and isn't broken, parse it. Otherwise, use initial layout.
+    houseguests = savedData ? JSON.parse(savedData) : initialHouseguests;
+    if (!Array.isArray(houseguests) || houseguests.length === 0) {
+        houseguests = initialHouseguests;
+    }
+} catch (e) {
+    houseguests = initialHouseguests;
+}
 
 const memoryWall = document.getElementById('memoryWall');
 const standingsContainer = document.getElementById('standings');
 
 // 2. RENDER MEMORY WALL INTERACTIVE GRID
 function renderWall() {
+    if (!memoryWall) return;
     memoryWall.innerHTML = '';
     
     houseguests.forEach(hg => {
         const card = document.createElement('div');
         card.className = `houseguest-card ${hg.evicted ? 'evicted' : ''}`;
         
-        // Define contextual secondary text label
         const subtitleLabel = hg.drafter === "None (Unchosen)" ? "Unchosen" : `(${hg.drafter}'s Pick)`;
         const buttonText = hg.evicted ? "In House" : "Out of House";
 
+        // Using relative dot slash './' ensures GitHub Pages looks inside the correct repository directory
         card.innerHTML = `
             <div class="portrait-container">
-                <img class="portrait-img" src="${hg.image}" alt="${hg.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                <img class="portrait-img" src="./${hg.image}" alt="${hg.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                 <div class="portrait-fallback" style="display:none;">
                     IMAGE PLACEHOLDER<br><strong>[${hg.image.toUpperCase()}]</strong>
                 </div>
@@ -76,9 +87,9 @@ function toggleEviction(id) {
 
 // 4. SCOREBOARD & PROGRESS CALCULATION
 function calculateStandings() {
+    if (!standingsContainer) return;
     const scores = {};
 
-    // Build unique tracking keys for participants
     houseguests.forEach(hg => {
         if (hg.drafter === "None (Unchosen)") return;
 
@@ -91,11 +102,9 @@ function calculateStandings() {
         }
     });
 
-    // Construct UI components for scoreboard side element
     let standingsHtml = '<div class="standings-list">';
     for (const [drafter, stats] of Object.entries(scores)) {
         const percentAlive = (stats.active / stats.total) * 100;
-        // Apply secondary danger styling color block if someone loses a player
         const dangerClass = stats.active < stats.total ? 'danger' : '';
 
         standingsHtml += `
@@ -116,8 +125,12 @@ function calculateStandings() {
 
 // 5. CACHE STATE CHANGES
 function saveData() {
-    localStorage.setItem('bbDraftData', JSON.stringify(houseguests));
+    try {
+        localStorage.setItem('bbDraftData', JSON.stringify(houseguests));
+    } catch (e) {
+        console.error("Local storage saving blocked or full", e);
+    }
 }
 
-// Launch application on target layout loading
+// Launch application
 renderWall();
