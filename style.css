@@ -232,3 +232,53 @@ h1 {
     box-shadow: 0 0 10px rgba(255, 0, 127, 0.2);
 }
 
+/* Responsive adjustments for mobile devices */
+@media (max-width: 768px) {
+    /* Stack the navigation links if they are crowding the header */
+    nav {
+        display: flex;
+        justify-content: space-around;
+        padding: 10px 5px;
+    }
+    
+    nav a {
+        font-size: 14px;
+        padding: 5px;
+    }
+
+    /* Shrink the memory wall grid so cards sit nicely on small screens */
+    #memoryWall {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 12px;
+        padding: 10px;
+    }
+
+    /* scale down the houseguest cards slightly for phone screens */
+    .houseguest-card {
+        padding: 8px;
+    }
+
+    .photo-box {
+        height: 120px; /* Reduces image height so you don't have to scroll forever */
+    }
+
+    .name {
+        font-size: 14px;
+    }
+
+    .status-btn {
+        padding: 6px;
+        font-size: 12px;
+    }
+    
+    /* Make the standings list stack cleanly */
+    .standings-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 8px;
+    }
+}
+
+
