@@ -34,8 +34,8 @@ const initialHouseguests = [
     { id: 17, name: "Angela", drafter: "Unchosen", image: "./images/angela.jpg", evicted: false }
 ];
 
-// Persistent state via LocalStorage
-let houseguests = JSON.parse(localStorage.getItem('bbDraftData')) || initialHouseguests;
+// Initialize with baseline data structure before database payload arrives
+let houseguests = [...initialHouseguests];
 
 const memoryWall = document.getElementById('memoryWall');
 const standingsContainer = document.getElementById('standings');
@@ -73,7 +73,6 @@ function renderWall() {
         });
     });
 
-    saveData();
     calculateStandings();
 }
 
@@ -85,7 +84,11 @@ function toggleEviction(id) {
         }
         return hg;
     });
+    
+    // Optimistically render instantly on screen click
     renderWall();
+    // Sync the update directly to Firebase cloud
+    saveData();
 }
 
 // 4. SCOREBOARD & PROGRESS CALCULATION
@@ -93,7 +96,6 @@ function calculateStandings() {
     const scores = {};
 
     houseguests.forEach(hg => {
-        // We no longer skip "Unchosen"! It will create its own entry in the standings.
         if (!scores[hg.drafter]) {
             scores[hg.drafter] = { active: 0, total: 0 };
         }
@@ -105,7 +107,6 @@ function calculateStandings() {
 
     let standingsHtml = '<ul class="standings-list">';
     for (const [drafter, stats] of Object.entries(scores)) {
-        // Make the "Unchosen" text stand out a bit visually in the list
         const displayName = drafter === "Unchosen" ? "<em>Unchosen (Angela)</em>" : drafter;
         
         standingsHtml += `
@@ -119,10 +120,25 @@ function calculateStandings() {
     standingsContainer.innerHTML = standingsHtml;
 }
 
-// 5. CACHE STATE
+// 5. CLOUD STORAGE STATE SYNC
 function saveData() {
+    // Save to LocalStorage as a local backup
     localStorage.setItem('bbDraftData', JSON.stringify(houseguests));
+    // Push the state up into your Firebase database node
+    database.ref("draft_state").set(houseguests);
 }
 
-// Initialize on execution
-renderWall();
+// 6. LISTEN FOR LIVE CLOUD UPDATES
+// This triggers automatically whenever data shifts inside Firebase, rendering updates across all phones live!
+database.ref("draft_state").on("value", (snapshot) => {
+    const cloudData = snapshot.val();
+    if (cloudData) {
+        houseguests = cloudData;
+        renderWall();
+    } else {
+        // If your database is brand new and completely blank, seed it with your 17-player list
+        houseguests = [...initialHouseguests];
+        renderWall();
+        saveData();
+    }
+});
