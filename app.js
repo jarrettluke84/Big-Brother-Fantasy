@@ -6,17 +6,17 @@ const initialHouseguests = [
     { id: 4, name: "La Trice", drafter: "Kait", image: "./images/latrice.jpeg", evicted: false },
     { id: 5, name: "Rome", drafter: "Hawk", image: "./images/rome.jpeg", evicted: false },
     { id: 6, name: "Yash", drafter: "Nick", image: "./images/yash.jpeg", evicted: false },
-    { id: 7, name: "Dee", drafter: "Noah", image: "./images/dee.jpeg", evicted: false },
+    { id: 7, name: "Dee", drafter: "Noah", image: "./images/dee.jpg", evicted: false },
     { id: 8, name: "Lyric", drafter: "Luke", image: "./images/lyric.jpeg", evicted: false },
     { id: 9, name: "Chuk", drafter: "Luke", image: "./images/chuk.jpeg", evicted: false },
-    { id: 10, name: "Rick", drafter: "Noah", image: "./images/rick.jpeg", evicted: false },
+    { id: 10, name: "Rick", drafter: "Noah", image: "./images/rick.jpg", evicted: false },
     { id: 11, name: "Jason", drafter: "Nick", image: "./images/jason.jpeg", evicted: false },
     { id: 12, name: "Ashley", drafter: "Hawk", image: "./images/ashley.jpeg", evicted: false },
     { id: 13, name: "Melody", drafter: "Kait", image: "./images/melody.jpeg", evicted: false },
     { id: 14, name: "Kamu", drafter: "Gabby", image: "./images/kamu.jpeg", evicted: false },
     { id: 15, name: "Haley", drafter: "Emily", image: "./images/haley.jpeg", evicted: false },
     { id: 16, name: "Drew", drafter: "Jordyn", image: "./images/drew.jpeg", evicted: false },
-    { id: 17, name: "Angela", drafter: "Unchosen", image: "./images/angela.jpeg", evicted: false }
+    { id: 17, name: "Angela", drafter: "Unchosen", image: "./images/angela.jpg", evicted: false }
 ];
 
 // Persistent state via LocalStorage
