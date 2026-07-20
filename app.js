@@ -142,3 +142,22 @@ database.ref("draft_state").on("value", (snapshot) => {
         saveData();
     }
 });
+
+// 7. DYNAMIC NAV LINK HIGHLIGHT
+function highlightCurrentPage() {
+    const currentPath = window.location.pathname;
+    const navLinks = document.querySelectorAll('nav a'); // Adjust if your class is different (e.g., '.nav-link')
+
+    navLinks.forEach(link => {
+        // Remove active class from all links first
+        link.classList.remove('active'); 
+        
+        // If the link href matches the current filename, highlight it
+        if (currentPath.includes(link.getAttribute('href'))) {
+            link.classList.add('active');
+        }
+    });
+}
+// Run it when the page loads
+highlightCurrentPage();
+
