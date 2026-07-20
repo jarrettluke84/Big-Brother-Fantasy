@@ -1,12 +1,12 @@
 // 1. FIREBASE SETTING CONNECTION
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyD7P3zDcxJxHNbU3wwu2wIeVD0lj9AiBGw",
+  authDomain: "bb-draft-2dc8a.firebaseapp.com",
+  databaseURL: "https://bb-draft-2dc8a-default-rtdb.firebaseio.com",
+  projectId: "bb-draft-2dc8a",
+  storageBucket: "bb-draft-2dc8a.firebasestorage.app",
+  messagingSenderId: "410738650882",
+  appId: "1:410738650882:web:fc0b1b684e025baa6b5c1b"
 };
 
 // Access the global namespace directly
