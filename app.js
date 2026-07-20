@@ -50,7 +50,8 @@ function renderWall() {
         // Using relative dot slash './' ensures GitHub Pages looks inside the correct repository directory
         card.innerHTML = `
             <div class="portrait-container">
-                <img class="portrait-img" src="./${hg.image}" alt="${hg.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                // NEW UPDATED CODE
+                <img class="portrait-img" src="./images/${hg.image}" alt="${hg.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                 <div class="portrait-fallback" style="display:none;">
                     IMAGE PLACEHOLDER<br><strong>[${hg.image.toUpperCase()}]</strong>
                 </div>
